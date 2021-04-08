@@ -19,15 +19,14 @@ package com.ichi2.utils;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ArrayUtilTest {
     private final Integer[] sampleItems = new Integer[] {1, 2, 3, 4, 5, 6};
-
 
     @Test
     public void arrayToArrayList() {
@@ -35,4 +34,6 @@ public class ArrayUtilTest {
         Collections.addAll(list, sampleItems);
         assertThat(ArrayUtil.toArrayList(sampleItems), is(list));
     }
+
+
 }

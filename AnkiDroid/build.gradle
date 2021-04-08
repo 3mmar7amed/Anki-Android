@@ -215,6 +215,8 @@ apply from: "./jacoco.gradle"
 apply from: "../lint.gradle"
 
 dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
     // Can possibly remove if upstream PR merges https://github.com/JakeWharton/timber/pull/398
     configurations.all {
         resolutionStrategy {

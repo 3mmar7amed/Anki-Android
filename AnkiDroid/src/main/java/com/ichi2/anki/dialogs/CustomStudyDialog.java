@@ -241,7 +241,7 @@ public class CustomStudyDialog extends AnalyticsDialogFragment implements
                         }
                         case CUSTOM_STUDY_FORGOT: {
                             JSONArray ar = new JSONArray();
-                            ar.put(0, 1);
+                            ar.put(0,  1);
                             createCustomStudySession(ar, new Object[] {String.format(Locale.US,
                                                                                      "rated:%d:1", n), Consts.DYN_MAX_SIZE, Consts.DYN_RANDOM}, false);
                             break;

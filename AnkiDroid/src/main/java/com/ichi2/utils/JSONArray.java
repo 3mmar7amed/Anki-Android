@@ -75,6 +75,7 @@ public class JSONArray extends org.json.JSONArray {
      * @return the same element as input. But considered as a JSONArray.
      */
     public static JSONArray arrayToArray(org.json.JSONArray ar){
+
         return (JSONArray) ar;
     }
 
@@ -162,49 +163,65 @@ public class JSONArray extends org.json.JSONArray {
         }
     }
 
-    public JSONArray put(int index, boolean value) {
+    /**
+     * the following put methods,
+     * take (index , value) then insert the certain value in a certain index in (values list)
+     * which has been created in json class, then return a list in a form of JSONArray.
+     * the main goal is to check on them By sending parameters and have the return JSON abject
+     * convert it to arraylist to check on the values.
+     */
+    public JSONArray put (int index , double value) {
         try {
             super.put(index, value);
-            return this;
-        } catch (org.json.JSONException e) {
+            return this ;
+        }
+        catch (org.json.JSONException e) {
+            throw new JSONException(e);
+        }
+    }
+    public JSONArray put (int index , boolean value) {
+        try {
+            super.put(index, value);
+            return this ;
+        }
+        catch (org.json.JSONException e) {
+            throw new JSONException(e);
+        }
+    }
+    public JSONArray put (int index , long value) {
+        try {
+            super.put(index, value);
+            return this ;
+        }
+        catch (org.json.JSONException e) {
+            throw new JSONException(e);
+        }
+    }
+    public JSONArray put (int index , int value) {
+        try {
+            super.put(index, value);
+            return this ;
+        }
+        catch (org.json.JSONException e) {
+            throw new JSONException(e);
+        }
+    }
+    public JSONArray put (int index , Object value) {
+        try {
+            super.put(index, value);
+            return this ;
+        }
+        catch (org.json.JSONException e) {
             throw new JSONException(e);
         }
     }
 
-    public JSONArray put(int index, double value) {
-        try {
-            super.put(index, value);
-            return this;
-        } catch (org.json.JSONException e) {
-            throw new JSONException(e);
-        }
-    }
+    public static void main (String []s) {
+        System.out.println("here iam");
+        JSONArray x = new JSONArray();
+        JSONArray array = x.put(2 , 2) ;
+            System.out.println(array);
 
-    public JSONArray put(int index, int value) {
-        try {
-            super.put(index, value);
-            return this;
-        } catch (org.json.JSONException e) {
-            throw new JSONException(e);
-        }
-    }
-
-    public JSONArray put(int index, long value) {
-        try {
-            super.put(index, value);
-            return this;
-        } catch (org.json.JSONException e) {
-            throw new JSONException(e);
-        }
-    }
-
-    public JSONArray put(int index, Object value) {
-        try {
-            super.put(index, value);
-            return this;
-        } catch (org.json.JSONException e) {
-            throw new JSONException(e);
-        }
     }
 
     public Object get(int index) {
