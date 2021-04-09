@@ -2,7 +2,6 @@ package com.ichi2.utils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -101,5 +100,4 @@ public class JSONArrayTest{
     public void getTestValueOutOfIndex(){
         x.get(200) ;
     }
-
 }
