@@ -1,34 +1,34 @@
-/*  
+/*
  *  Copyright (c) 2020 Arthur Milchior <arthur@milchior.fr>
- *  
- *  This file is free software: you may copy, redistribute and/or modify it  
- *  under the terms of the GNU General Public License as published by the  
- *  Free Software Foundation, either version 3 of the License, or (at your  
- *  option) any later version.  
- *  
- *  This file is distributed in the hope that it will be useful, but  
- *  WITHOUT ANY WARRANTY; without even the implied warranty of  
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU  
- *  General Public License for more details.  
- *  
- *  You should have received a copy of the GNU General Public License  
+ *
+ *  This file is free software: you may copy, redistribute and/or modify it
+ *  under the terms of the GNU General Public License as published by the
+ *  Free Software Foundation, either version 3 of the License, or (at your
+ *  option) any later version.
+ *
+ *  This file is distributed in the hope that it will be useful, but
+ *  WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *  
- *  This file incorporates work covered by the following copyright and  
- *  permission notice:  
- *  
+ *
+ *  This file incorporates work covered by the following copyright and
+ *  permission notice:
+ *
  *    Copyright (c) 2002 JSON.org
- *    
+ *
  *    Permission is hereby granted, free of charge, to any person obtaining a copy
  *    of this software and associated documentation files (the "Software"), to deal
  *    in the Software without restriction, including without limitation the rights
  *    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  *    copies of the Software, and to permit persons to whom the Software is
  *    furnished to do so, subject to the following conditions:
- *   
+ *
  *    The above copyright notice and this permission notice shall be included in all
  *    copies or substantial portions of the Software.
- *   
+ *
  *    The Software shall be used for Good, not Evil.
  *
  *    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
@@ -37,7 +37,7 @@
  *    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  *    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  *    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *    SOFTWARE. 
+ *    SOFTWARE.
  */
 
 package com.ichi2.utils;
@@ -55,6 +55,7 @@ public class JSONArray extends org.json.JSONArray {
         super();
     }
 
+
     public JSONArray(org.json.JSONArray copyFrom) {
         try {
             for (int i = 0; i < copyFrom.length(); i++) {
@@ -68,16 +69,17 @@ public class JSONArray extends org.json.JSONArray {
 
     /**
      * This method simply change the type.
-     *
+     * <p>
      * See the comment of objectToObject to read about the problems met here.
      *
      * @param ar Actually a JSONArray
      * @return the same element as input. But considered as a JSONArray.
      */
-    public static JSONArray arrayToArray(org.json.JSONArray ar){
+    public static JSONArray arrayToArray(org.json.JSONArray ar) {
 
         return (JSONArray) ar;
     }
+
 
     public JSONArray(JSONTokener x) {
         this();
@@ -128,9 +130,11 @@ public class JSONArray extends org.json.JSONArray {
         }
     }
 
+
     public JSONArray(String source) {
         this(new JSONTokener(source));
     }
+
 
     public JSONArray(Object array) {
         this();
@@ -145,6 +149,7 @@ public class JSONArray extends org.json.JSONArray {
         }
     }
 
+
     public JSONArray(Collection<?> copyFrom) {
         this();
         if (copyFrom != null) {
@@ -153,6 +158,7 @@ public class JSONArray extends org.json.JSONArray {
             }
         }
     }
+
 
     public JSONArray put(double value) {
         try {
@@ -163,6 +169,7 @@ public class JSONArray extends org.json.JSONArray {
         }
     }
 
+
     /**
      * the following put methods,
      * take (index , value) then insert the certain value in a certain index in (values list)
@@ -170,59 +177,64 @@ public class JSONArray extends org.json.JSONArray {
      * the main goal is to check on them By sending parameters and have the return JSON abject
      * convert it to arraylist to check on the values.
      */
-    public JSONArray put (int index , double value) {
+    public JSONArray put(int index, double value) {
         try {
             super.put(index, value);
-            return this ;
-        }
-        catch (org.json.JSONException e) {
-            throw new JSONException(e);
-        }
-    }
-    public JSONArray put (int index , boolean value) {
-        try {
-            super.put(index, value);
-            return this ;
-        }
-        catch (org.json.JSONException e) {
-            throw new JSONException(e);
-        }
-    }
-    public JSONArray put (int index , long value) {
-        try {
-            super.put(index, value);
-            return this ;
-        }
-        catch (org.json.JSONException e) {
-            throw new JSONException(e);
-        }
-    }
-    public JSONArray put (int index , int value) {
-        try {
-            super.put(index, value);
-            return this ;
-        }
-        catch (org.json.JSONException e) {
-            throw new JSONException(e);
-        }
-    }
-    public JSONArray put (int index , Object value) {
-        try {
-            super.put(index, value);
-            return this ;
-        }
-        catch (org.json.JSONException e) {
+            return this;
+        } catch (org.json.JSONException e) {
             throw new JSONException(e);
         }
     }
 
-    public static void main (String []s) {
+
+    public JSONArray put(int index, boolean value) {
+        try {
+            super.put(index, value);
+            return this;
+        } catch (org.json.JSONException e) {
+            throw new JSONException(e);
+        }
+    }
+
+
+    public JSONArray put(int index, long value) {
+        try {
+            super.put(index, value);
+            return this;
+        } catch (org.json.JSONException e) {
+            throw new JSONException(e);
+        }
+    }
+
+
+    public JSONArray put(int index, int value) {
+        try {
+            super.put(index, value);
+            return this;
+        } catch (org.json.JSONException e) {
+            throw new JSONException(e);
+        }
+    }
+
+
+    public JSONArray put(int index, Object value) {
+        try {
+            super.put(index, value);
+            return this;
+        } catch (org.json.JSONException e) {
+            throw new JSONException(e);
+        }
+    }
+
+
+    public static void main(String[] s) {
         System.out.println("here iam");
         JSONArray x = new JSONArray();
-        JSONArray array = x.put(2 , 2) ;
-            System.out.println(array);
+        JSONArray array = x.put(2, 2);
+        System.out.println(array);
 
     }
+
 
     public Object get(int index) {
         try {
@@ -232,6 +244,7 @@ public class JSONArray extends org.json.JSONArray {
         }
     }
 
+
     public boolean getBoolean(int index) {
         try {
             return super.getBoolean(index);
@@ -239,6 +252,7 @@ public class JSONArray extends org.json.JSONArray {
             throw new JSONException(e);
         }
     }
+
 
     public double getDouble(int index) {
         try {
@@ -248,6 +262,7 @@ public class JSONArray extends org.json.JSONArray {
         }
     }
 
+
     public int getInt(int index) {
         try {
             return super.getInt(index);
@@ -255,6 +270,7 @@ public class JSONArray extends org.json.JSONArray {
             throw new JSONException(e);
         }
     }
+
 
     public long getLong(int index) {
         try {
@@ -264,6 +280,7 @@ public class JSONArray extends org.json.JSONArray {
         }
     }
 
+
     public String getString(int index) {
         try {
             return super.getString(index);
@@ -272,21 +289,24 @@ public class JSONArray extends org.json.JSONArray {
         }
     }
 
+
     public JSONArray getJSONArray(int pos) {
         try {
             return arrayToArray(super.getJSONArray(pos));
         } catch (org.json.JSONException e) {
-            throw new RuntimeException (e);
+            throw new RuntimeException(e);
         }
     }
+
 
     public JSONObject getJSONObject(int pos) {
         try {
             return JSONObject.objectToObject(super.getJSONObject(pos));
         } catch (org.json.JSONException e) {
-            throw new RuntimeException (e);
+            throw new RuntimeException(e);
         }
     }
+
 
     public String join(String separator) {
         try {
@@ -296,7 +316,9 @@ public class JSONArray extends org.json.JSONArray {
         }
     }
 
-    public @NonNull String toString(int indentSpaces) {
+
+    public @NonNull
+    String toString(int indentSpaces) {
         try {
             return super.toString(indentSpaces);
         } catch (org.json.JSONException e) {
@@ -310,8 +332,7 @@ public class JSONArray extends org.json.JSONArray {
         for (int i = 0; i < length(); i++) {
             if (get(i) instanceof JSONObject) {
                 clone.put(getJSONObject(i).deepClone());
-            }
-            else if (get(i) instanceof JSONArray) {
+            } else if (get(i) instanceof JSONArray) {
                 clone.put(getJSONArray(i).deepClone());
             } else {
                 clone.put(get(i));
@@ -320,12 +341,17 @@ public class JSONArray extends org.json.JSONArray {
         return clone;
     }
 
+
     public Iterable<JSONArray> jsonArrayIterable() {
         return this::jsonArrayIterator;
     }
+
+
     public Iterator<JSONArray> jsonArrayIterator() {
         return new Iterator<JSONArray>() {
             private int index = 0;
+
+
             @Override
             public boolean hasNext() {
                 return index < length();
@@ -341,12 +367,17 @@ public class JSONArray extends org.json.JSONArray {
         };
     }
 
+
     public Iterable<JSONObject> jsonObjectIterable() {
         return this::jsonObjectIterator;
     }
+
+
     public Iterator<JSONObject> jsonObjectIterator() {
         return new Iterator<JSONObject>() {
             private int index = 0;
+
+
             @Override
             public boolean hasNext() {
                 return index < length();
@@ -362,12 +393,17 @@ public class JSONArray extends org.json.JSONArray {
         };
     }
 
+
     public Iterable<String> stringIterable() {
         return this::stringIterator;
     }
+
+
     public Iterator<String> stringIterator() {
         return new Iterator<String>() {
             private int index = 0;
+
+
             @Override
             public boolean hasNext() {
                 return index < length();
@@ -383,12 +419,17 @@ public class JSONArray extends org.json.JSONArray {
         };
     }
 
+
     public Iterable<Long> longIterable() {
         return this::longIterator;
     }
+
+
     public Iterator<Long> longIterator() {
         return new Iterator<Long>() {
             private int index = 0;
+
+
             @Override
             public boolean hasNext() {
                 return index < length();
@@ -404,6 +445,7 @@ public class JSONArray extends org.json.JSONArray {
         };
     }
 
+
     public List<JSONObject> toJSONObjectList() {
         List<JSONObject> l = new ArrayList<>(length());
         for (JSONObject object : jsonObjectIterable()) {
@@ -412,6 +454,7 @@ public class JSONArray extends org.json.JSONArray {
         return l;
     }
 
+
     public List<Long> toLongList() {
         List<Long> l = new ArrayList<>(length());
         for (Long object : longIterable()) {
@@ -419,6 +462,7 @@ public class JSONArray extends org.json.JSONArray {
         }
         return l;
     }
+
 
     public List<String> toStringList() {
         List<String> l = new ArrayList<>(length());

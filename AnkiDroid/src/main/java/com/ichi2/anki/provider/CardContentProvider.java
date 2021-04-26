@@ -128,6 +128,7 @@ public class CardContentProvider extends ContentProvider {
     private static final UriMatcher sUriMatcher =
             new UriMatcher(UriMatcher.NO_MATCH);
 
+
     static {
         // Here you can see all the URIs at a glance
         sUriMatcher.addURI(FlashCardsContract.AUTHORITY, "notes", NOTES);
@@ -148,6 +149,7 @@ public class CardContentProvider extends ContentProvider {
         sUriMatcher.addURI(FlashCardsContract.AUTHORITY, "media", MEDIA);
     }
 
+
     /**
      * The names of the columns returned by this content provider differ slightly from the names
      * given of the database columns. This list is used to convert the column names used in a
@@ -159,6 +161,7 @@ public class CardContentProvider extends ContentProvider {
     private static final String[] sDefaultNoteProjectionDBAccess = FlashCardsContract.Note.DEFAULT_PROJECTION.clone();
     private static final String COL_NULL_ERROR_MSG = "AnkiDroid database inaccessible. Open AnkiDroid to see what's wrong.";
 
+
     static {
         for (int idx = 0; idx < sDefaultNoteProjectionDBAccess.length; idx++) {
             if (sDefaultNoteProjectionDBAccess[idx].equals(FlashCardsContract.Note._ID)) {
@@ -167,6 +170,7 @@ public class CardContentProvider extends ContentProvider {
         }
     }
 
+
     @Override
     public boolean onCreate() {
         // Initialize content provider on startup.
@@ -174,6 +178,7 @@ public class CardContentProvider extends ContentProvider {
         mContext = getContext();
         return true;
     }
+
 
     @Override
     public String getType(@NonNull Uri uri) {
@@ -211,15 +216,23 @@ public class CardContentProvider extends ContentProvider {
         }
     }
 
-    /** Only enforce permissions for queries and inserts on Android M and above, or if its a 'rogue client' **/
+
+    /**
+     * Only enforce permissions for queries and inserts on Android M and above, or if its a 'rogue client'
+     **/
     private boolean shouldEnforceQueryOrInsertSecurity() {
         return CompatHelper.isMarshmallow() || knownRogueClient();
     }
-    /** Enforce permissions for all updates on Android M and above. Otherwise block depending on URI and client app **/
+
+
+    /**
+     * Enforce permissions for all updates on Android M and above. Otherwise block depending on URI and client app
+     **/
     private boolean shouldEnforceUpdateSecurity(Uri uri) {
         final List<Integer> WHITELIST = Arrays.asList(NOTES_ID_CARDS_ORD, MODELS_ID, MODELS_ID_TEMPLATES_ID, SCHEDULE, DECK_SELECTED);
         return CompatHelper.isMarshmallow() || !WHITELIST.contains(sUriMatcher.match(uri)) || knownRogueClient();
     }
+
 
     @Override
     public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String order) {
@@ -307,7 +320,7 @@ public class CardContentProvider extends ContentProvider {
                     JSONArray templates = currentModel.getJSONArray("tmpls");
                     for (int idx = 0; idx < templates.length(); idx++) {
                         JSONObject template = templates.getJSONObject(idx);
-                        addTemplateToCursor(template, currentModel, idx+1, models, rv, columns);
+                        addTemplateToCursor(template, currentModel, idx + 1, models, rv, columns);
                     }
                 } catch (JSONException e) {
                     throw new IllegalArgumentException("Model is malformed", e);
@@ -323,7 +336,7 @@ public class CardContentProvider extends ContentProvider {
                 MatrixCursor rv = new MatrixCursor(columns, 1);
                 try {
                     JSONObject template = getTemplateFromUri(uri, col);
-                    addTemplateToCursor(template, currentModel, ord+1, models, rv, columns);
+                    addTemplateToCursor(template, currentModel, ord + 1, models, rv, columns);
                 } catch (JSONException e) {
                     throw new IllegalArgumentException("Model is malformed", e);
                 }
@@ -351,7 +364,7 @@ public class CardContentProvider extends ContentProvider {
                                 limit = Integer.parseInt(value);
                             } else if ("deckID".equals(keyAndValue[0].trim())) {
                                 deckIdOfTemporarilySelectedDeck = Long.parseLong(value);
-                                if(!selectDeckWithCheck(col, deckIdOfTemporarilySelectedDeck)){
+                                if (!selectDeckWithCheck(col, deckIdOfTemporarilySelectedDeck)) {
                                     return rv; //if the provided deckID is wrong, return empty cursor.
                                 }
                             }
@@ -363,7 +376,7 @@ public class CardContentProvider extends ContentProvider {
 
                 //retrieve the number of cards provided by the selection parameter "limit"
                 col.getSched().deferReset();
-                for (int k = 0; k< limit; k++){
+                for (int k = 0; k < limit; k++) {
                     Card currentCard = col.getSched().getCard();
 
                     if (currentCard == null) {
@@ -401,7 +414,7 @@ public class CardContentProvider extends ContentProvider {
                 List<DeckDueTreeNode> allDecks = col.getSched().deckDueList();
                 long deckId = Long.parseLong(uri.getPathSegments().get(1));
                 for (DeckDueTreeNode deck : allDecks) {
-                    if(deck.getDid() == deckId){
+                    if (deck.getDid() == deckId) {
                         addDeckToCursor(deckId, deck.getFullDeckName(), getDeckCountsFromDueTreeNode(deck), rv, col, columns);
                         return rv;
                     }
@@ -414,7 +427,7 @@ public class CardContentProvider extends ContentProvider {
                 String[] columns = ((projection != null) ? projection : FlashCardsContract.Deck.DEFAULT_PROJECTION);
                 MatrixCursor rv = new MatrixCursor(columns, 1);
                 JSONArray counts = new JSONArray(Collections.singletonList(col.getSched().counts()));
-                addDeckToCursor(id, name, counts,rv, col, columns);
+                addDeckToCursor(id, name, counts, rv, col, columns);
                 return rv;
             }
             default:
@@ -423,13 +436,15 @@ public class CardContentProvider extends ContentProvider {
         }
     }
 
-    private JSONArray getDeckCountsFromDueTreeNode(DeckDueTreeNode deck){
+
+    private JSONArray getDeckCountsFromDueTreeNode(DeckDueTreeNode deck) {
         JSONArray deckCounts = new JSONArray();
         deckCounts.put(deck.getLrnCount());
         deckCounts.put(deck.getRevCount());
         deckCounts.put(deck.getNewCount());
         return deckCounts;
     }
+
 
     @Override
     public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
@@ -469,7 +484,7 @@ public class CardContentProvider extends ContentProvider {
                             throw new IllegalArgumentException("Incorrect flds argument : " + newFldsEncoded);
                         }
                         // Update the note
-                        for (int idx=0; idx < flds.length; idx++) {
+                        for (int idx = 0; idx < flds.length; idx++) {
                             currentNote.setField(idx, flds[idx]);
                         }
                         updated++;
@@ -490,10 +505,42 @@ public class CardContentProvider extends ContentProvider {
                 currentNote.flush();
                 break;
             }
-            case NOTES_ID_CARDS:
+            case NOTES_ID_CARDS: {
                 // TODO: To be implemented
-                throw new UnsupportedOperationException("Not yet implemented");
-//                break;
+                // the following code has much code repetition with NOTES_ID_CARDS_ORD
+                //  i can reduce them when i am sure that this kind of update is valid
+                List<Card> cardsList = getCardsFromUri(uri, col);
+                long did = Decks.NOT_FOUND_DECK_ID;
+                // the key of the ContentValues contains the column name
+                // the value of the ContentValues contains the row value.
+                Set<Map.Entry<String, Object>> valueSet = values.valueSet();
+                for (Map.Entry<String, Object> entry : valueSet) {
+                    // Only updates on deck id is supported
+                    // move all cards related to that note to specific deck
+                    String key = entry.getKey();
+                    if (key.equals(FlashCardsContract.Card.DECK_ID)) {
+                        did = values.getAsLong(key);
+                    }
+                }
+                if (col.getDecks().isDyn(did)) {
+                    throw new IllegalArgumentException("Cards cannot be moved to a filtered deck");
+                }
+
+                if (did >= 0) {
+                    for (Card card : cardsList) {
+                        Timber.d("CardContentProvider: Moving card to other deck...");
+                        col.getDecks().flush();
+                        card.setDid(did);
+                        card.flush();
+                        col.save();
+                        updated++;
+                    }
+                } else {
+                    // User tries an operation that is not (yet?) supported.
+                    throw new IllegalArgumentException("Currently only updates of decks are supported");
+                }
+                break;
+            }
             case NOTES_ID_CARDS_ORD: {
                 Card currentCard = getCardFromUri(uri, col);
                 boolean isDeckUpdate = false;
@@ -665,8 +712,8 @@ public class CardContentProvider extends ContentProvider {
                 }
                 if (cardOrd != -1 && noteID != -1) {
                     Card cardToAnswer = getCard(noteID, cardOrd, col);
-                    if(cardToAnswer != null) {
-                        if( bury == 1 ) {
+                    if (cardToAnswer != null) {
+                        if (bury == 1) {
                             // bury card
                             buryOrSuspendCard(col, col.getSched(), cardToAnswer, true);
                         } else if (suspend == 1) {
@@ -676,9 +723,9 @@ public class CardContentProvider extends ContentProvider {
                             answerCard(col, col.getSched(), cardToAnswer, ease, timeTaken);
                         }
                         updated++;
-                    }else{
+                    } else {
                         Timber.e("Requested card with noteId %d and cardOrd %d was not found. Either the provided " +
-                            "noteId/cardOrd were wrong or the card has been deleted in the meantime.", noteID, cardOrd);
+                                "noteId/cardOrd were wrong or the card has been deleted in the meantime.", noteID, cardOrd);
                     }
                 }
                 break;
@@ -692,10 +739,10 @@ public class CardContentProvider extends ContentProvider {
                 Set<Map.Entry<String, Object>> valueSet = values.valueSet();
                 for (Map.Entry<String, Object> entry : valueSet) {
                     String key = entry.getKey();
-                    if(key.equals(FlashCardsContract.Deck.DECK_ID)) {
+                    if (key.equals(FlashCardsContract.Deck.DECK_ID)) {
                         long deckId = values.getAsLong(key);
-                        if(selectDeckWithCheck(col, deckId)){
-                            updated ++;
+                        if (selectDeckWithCheck(col, deckId)) {
+                            updated++;
                         }
                     }
                 }
@@ -708,6 +755,7 @@ public class CardContentProvider extends ContentProvider {
         }
         return updated;
     }
+
 
     @Override
     public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
@@ -722,7 +770,7 @@ public class CardContentProvider extends ContentProvider {
 
         switch (sUriMatcher.match(uri)) {
             case NOTES_ID:
-                col.remNotes(new long[]{Long.parseLong(uri.getPathSegments().get(1))});
+                col.remNotes(new long[] {Long.parseLong(uri.getPathSegments().get(1))});
                 return 1;
             case MODELS_ID_EMPTY_CARDS:
                 Model model = col.getModels().get(getModelIdFromUri(uri, col));
@@ -737,12 +785,13 @@ public class CardContentProvider extends ContentProvider {
         }
     }
 
+
     /**
      * This can be used to insert multiple notes into a single deck. The deck is specified as a query parameter.
-     *
+     * <p>
      * For example: content://com.ichi2.anki.flashcards/notes?deckId=1234567890123
      *
-     * @param uri content Uri
+     * @param uri    content Uri
      * @param values for notes uri, it is acceptable for values to contain null items. Such items will be skipped
      * @return number of notes added (does not include existing notes that were updated)
      */
@@ -762,13 +811,14 @@ public class CardContentProvider extends ContentProvider {
                     long deckId = Long.parseLong(deckIdStr);
                     return bulkInsertNotes(values, deckId);
                 } catch (NumberFormatException e) {
-                    Timber.d(e,"Invalid %s: %s", FlashCardsContract.Note.DECK_ID_QUERY_PARAM, deckIdStr);
+                    Timber.d(e, "Invalid %s: %s", FlashCardsContract.Note.DECK_ID_QUERY_PARAM, deckIdStr);
                 }
             }
             // deckId not specified, so default to #super implementation (as in spec version 1)
         }
         return super.bulkInsert(uri, values);
     }
+
 
     /**
      * This implementation optimizes for when the notes are grouped according to model.
@@ -849,6 +899,7 @@ public class CardContentProvider extends ContentProvider {
         }
     }
 
+
     @Override
     public Uri insert(@NonNull Uri uri, ContentValues values) {
         if (!hasReadWritePermission() && shouldEnforceQueryOrInsertSecurity()) {
@@ -879,7 +930,7 @@ public class CardContentProvider extends ContentProvider {
                 if (fldsArray.length != newNote.getFields().length) {
                     throw new IllegalArgumentException("Incorrect flds argument : " + flds);
                 }
-                for (int idx=0; idx < fldsArray.length; idx++) {
+                for (int idx = 0; idx < fldsArray.length; idx++) {
                     newNote.setField(idx, fldsArray[idx]);
                 }
                 // Set tags
@@ -922,19 +973,19 @@ public class CardContentProvider extends ContentProvider {
                 try {
                     // Add the fields
                     String[] allFields = Utils.splitFields(fieldNames);
-                    for (String f: allFields) {
+                    for (String f : allFields) {
                         mm.addFieldInNewModel(newModel, mm.newField(f));
                     }
                     // Add some empty card templates
                     for (int idx = 0; idx < numCards; idx++) {
                         String card_name = mContext.getResources().getString(R.string.card_n_name, idx + 1);
                         JSONObject t = Models.newTemplate(card_name);
-                        t.put("qfmt",String.format("{{%s}}", allFields[0]));
+                        t.put("qfmt", String.format("{{%s}}", allFields[0]));
                         String answerField = allFields[0];
                         if (allFields.length > 1) {
                             answerField = allFields[1];
                         }
-                        t.put("afmt",String.format("{{FrontSide}}\\n\\n<hr id=answer>\\n\\n{{%s}}", answerField));
+                        t.put("afmt", String.format("{{FrontSide}}\\n\\n<hr id=answer>\\n\\n{{%s}}", answerField));
                         mm.addTemplateInNewModel(newModel, t);
                     }
                     // Add the CSS if specified
@@ -1071,6 +1122,7 @@ public class CardContentProvider extends ContentProvider {
         }
     }
 
+
     private Uri insertMediaFile(ContentValues values, Collection col) {
         // Insert media file using libanki.Media.addFile and return Uri for the inserted file.
         Uri fileUri = Uri.parse(values.getAsString(FlashCardsContract.AnkiMedia.FILE_URI));
@@ -1098,7 +1150,7 @@ public class CardContentProvider extends ContentProvider {
             }
             try {
                 tempFile = File.createTempFile(
-                        preferredName+"_", // the beginning of the filename.
+                        preferredName + "_", // the beginning of the filename.
                         "." + fileMimeType, // this is the extension, if null, '.tmp' is used, need to get the extension from MIME type?
                         tempMediaDir
                 );
@@ -1124,6 +1176,7 @@ public class CardContentProvider extends ContentProvider {
         }
     }
 
+
     private static String[] sanitizeNoteProjection(String[] projection) {
         if (projection == null || projection.length == 0) {
             return sDefaultNoteProjectionDBAccess;
@@ -1140,6 +1193,7 @@ public class CardContentProvider extends ContentProvider {
         return sanitized.toArray(new String[sanitized.size()]);
     }
 
+
     private static int projSearch(String[] projection, String column) {
         for (int i = 0; i < projection.length; i++) {
             if (projection[i].equals(column)) {
@@ -1148,6 +1202,7 @@ public class CardContentProvider extends ContentProvider {
         }
         return -1;
     }
+
 
     private void addModelToCursor(Long modelId, Models models, MatrixCursor rv, String[] columns) {
         Model jsonObject = models.get(modelId);
@@ -1204,6 +1259,7 @@ public class CardContentProvider extends ContentProvider {
         }
     }
 
+
     private void addCardToCursor(Card currentCard, MatrixCursor rv, Collection col, String[] columns) {
         String cardName;
         try {
@@ -1250,7 +1306,8 @@ public class CardContentProvider extends ContentProvider {
         }
     }
 
-    private void addReviewInfoToCursor(Card currentCard, JSONArray nextReviewTimesJson, int buttonCount,MatrixCursor rv, Collection col, String[] columns) {
+
+    private void addReviewInfoToCursor(Card currentCard, JSONArray nextReviewTimesJson, int buttonCount, MatrixCursor rv, Collection col, String[] columns) {
         MatrixCursor.RowBuilder rb = rv.newRow();
         for (String column : columns) {
             switch (column) {
@@ -1275,14 +1332,15 @@ public class CardContentProvider extends ContentProvider {
         }
     }
 
+
     private void answerCard(Collection col, AbstractSched sched, Card cardToAnswer, @Consts.BUTTON_TYPE int ease, long timeTaken) {
         try {
             DB db = col.getDb();
             db.getDatabase().beginTransaction();
             try {
                 if (cardToAnswer != null) {
-                    if(timeTaken != -1){
-                        cardToAnswer.setTimerStarted(col.getTime().intTimeMS()-timeTaken);
+                    if (timeTaken != -1) {
+                        cardToAnswer.setTimerStarted(col.getTime().intTimeMS() - timeTaken);
                     }
                     sched.answerCard(cardToAnswer, ease);
                 }
@@ -1301,7 +1359,7 @@ public class CardContentProvider extends ContentProvider {
         try {
             col.getDb().executeInTransaction(() -> {
                 if (card != null) {
-                    if(bury) {
+                    if (bury) {
                         // bury
                         sched.buryCards(new long[] {card.getId()});
                     } else {
@@ -1315,6 +1373,7 @@ public class CardContentProvider extends ContentProvider {
             AnkiDroidApp.sendExceptionReport(e, "doInBackgroundBurySuspendCard");
         }
     }
+
 
     private void addTemplateToCursor(JSONObject tmpl, Model model, int id, Models models, MatrixCursor rv, String[] columns) {
         try {
@@ -1359,6 +1418,7 @@ public class CardContentProvider extends ContentProvider {
         }
     }
 
+
     private void addDeckToCursor(long id, String name, JSONArray deckCounts, MatrixCursor rv, Collection col, String[] columns) {
         MatrixCursor.RowBuilder rb = rv.newRow();
         for (String column : columns) {
@@ -1387,17 +1447,19 @@ public class CardContentProvider extends ContentProvider {
         }
     }
 
-    private boolean selectDeckWithCheck(Collection col, long did){
+
+    private boolean selectDeckWithCheck(Collection col, long did) {
         if (col.getDecks().get(did, false) != null) {
             col.getDecks().select(did);
             return true;
         } else {
             Timber.e("Requested deck with id %d was not found in deck list. Either the deckID provided was wrong" +
-                    "or the deck has been deleted in the meantime."
+                            "or the deck has been deleted in the meantime."
                     , did);
             return false;
         }
     }
+
 
     private Card getCardFromUri(Uri uri, Collection col) {
         long noteId = Long.parseLong(uri.getPathSegments().get(1));
@@ -1405,11 +1467,18 @@ public class CardContentProvider extends ContentProvider {
         return getCard(noteId, ord, col);
     }
 
-    private Card getCard(long noteId, int ord, Collection col){
+
+    private List<Card> getCardsFromUri(Uri uri, Collection col) {
+        long noteId = Long.parseLong(uri.getPathSegments().get(1));
+        return getAllCards(noteId, col);
+    }
+
+
+    private Card getCard(long noteId, int ord, Collection col) {
         Note currentNote = col.getNote(noteId);
         Card currentCard = null;
-        for(Card card : currentNote.cards()){
-            if(card.getOrd() == ord){
+        for (Card card : currentNote.cards()) {
+            if (card.getOrd() == ord) {
                 currentCard = card;
             }
         }
@@ -1418,6 +1487,13 @@ public class CardContentProvider extends ContentProvider {
         }
         return currentCard;
     }
+
+
+    private List<Card> getAllCards(long noteId, Collection col) {
+        Note currentNote = col.getNote(noteId);
+        return currentNote.cards();
+    }
+
 
     private Note getNoteFromUri(Uri uri, Collection col) {
         long noteId = Long.parseLong(uri.getPathSegments().get(1));
@@ -1440,11 +1516,13 @@ public class CardContentProvider extends ContentProvider {
         return id;
     }
 
+
     private JSONObject getTemplateFromUri(Uri uri, Collection col) throws JSONException {
         JSONObject model = col.getModels().get(getModelIdFromUri(uri, col));
         int ord = Integer.parseInt(uri.getLastPathSegment());
         return model.getJSONArray("tmpls").getJSONObject(ord);
     }
+
 
     private void throwSecurityException(String methodName, Uri uri) {
         String msg = String.format("Permission not granted for: %s", getLogMessage(methodName, uri));
@@ -1452,11 +1530,13 @@ public class CardContentProvider extends ContentProvider {
         throw new SecurityException(msg);
     }
 
+
     private String getLogMessage(String methodName, Uri uri) {
         final String format = "%s.%s %s (%s)";
         String path = uri == null ? null : uri.getPath();
         return String.format(format, getClass().getSimpleName(), methodName, path, getCallingPackage());
     }
+
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean hasReadWritePermission() {
@@ -1467,16 +1547,18 @@ public class CardContentProvider extends ContentProvider {
     }
 
 
-    /** Returns true if the calling package is known to be "rogue" and should be blocked.
-     Calling package might be rogue if it has not declared #READ_WRITE_PERMISSION in its manifest, or if blacklisted **/
+    /**
+     * Returns true if the calling package is known to be "rogue" and should be blocked.
+     * Calling package might be rogue if it has not declared #READ_WRITE_PERMISSION in its manifest, or if blacklisted
+     **/
     private boolean knownRogueClient() {
         final PackageManager pm = mContext.getPackageManager();
         try {
             PackageInfo callingPi = pm.getPackageInfo(getCallingPackage(), PackageManager.GET_PERMISSIONS);
-             if (callingPi == null || callingPi.requestedPermissions == null) {
-                 return false;
-             }
-             return !Arrays.asList(callingPi.requestedPermissions).contains(READ_WRITE_PERMISSION);
+            if (callingPi == null || callingPi.requestedPermissions == null) {
+                return false;
+            }
+            return !Arrays.asList(callingPi.requestedPermissions).contains(READ_WRITE_PERMISSION);
         } catch (PackageManager.NameNotFoundException e) {
             Timber.w(e);
             return false;
